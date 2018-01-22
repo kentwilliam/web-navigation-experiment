@@ -8,6 +8,7 @@
 
 * {
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  transition: all .4s;
 }
 
 body {
@@ -19,26 +20,33 @@ body {
 a {
   color: var(--theme-body-copy);
   text-decoration: none;
-  box-shadow: inset 0 -1px 0 var(--theme-link-underline);
 }
   a:hover {
     color: var(--theme-link-hover);
-    box-shadow: inset 0 -1px 0 var(--theme-link-hover);
+  }
+  a.active,
+  a.active:hover {
+    color: var(--theme-link-hover);
+    cursor: default;
   }
 
 /* --- Navigation --- */
 
 header {
-  box-shadow: inset 0 0 0 4px green;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 nav {
-  height: 160px;
-  border-bottom: 1px solid var(--theme-link-underline);
-  transition: all .5s;
   -webkit-overflow-scrolling: touch;
-  overflow: auto;
-  box-shadow: inset 0 0 0 4px red;
+  overflow-x: auto;
+  overflow-y: hidden;
+  border: 1px dotted silver;
+  height: 1.2em;
+  padding: 10px 16px;
 }
 
 #root-navigation {
@@ -56,24 +64,44 @@ nav {
 
 #content-navigation {
   font-size: 20px;
+  white-space: nowrap;
+  height: auto;
 }
   #content-navigation > a {
-    width: 300px;
+    width: 200px;
     display: inline-block;
+    white-space: normal;
+    margin-right: 20px;
   }
-
-#content-navigation {
-  opacity: .2;
-}
 
 /* --- Navigation transition states --- */
 
-nav.focused {
-  transform: translateY(-30%) scale(1);
-  opacity: 1 !important;
+nav {
+  transform-origin: bottom left;
 }
 
-nav.offscreen {
-  transform: translateY(-60%) scale(1.6);
+.level-2 #root-navigation {
+  transform: translateY(-150%) scale(2);
+  opacity: 0;
+  pointer-events: none;
 }
 
+.level-1 #root-navigation {
+  transform: translateY(-50%) scale(1.5);
+}
+
+.level-1 #section-navigation {
+  transform: translateY(-150%) scale(1.5);
+}
+
+.level-2 #section-navigation {
+  transform: translateY(-250%) scale(2);
+}
+
+.level-1 #content-navigation {
+  transform: translateY(-100px);
+}
+
+.level-2 #content-navigation {
+  transform: translateY(-200px);
+}

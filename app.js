@@ -1,8 +1,6 @@
-const [rootNavigation, sectionNavigation, contentNavigation] = [
-  "root-navigation",
-  "section-navigation",
-  "content-navigation"
-].map(id => document.getElementById(id));
+const navNodes = document.querySelectorAll("nav");
+
+const links = document.querySelectorAll("a[href]");
 
 document.addEventListener("click", event =>
   letWith(event.target.closest("a"), link => {
@@ -12,35 +10,20 @@ document.addEventListener("click", event =>
   })
 );
 
-window.addEventListener("popstate", popStateEvent =>
-  updateNavigation(window.location.pathname)
-);
+window.addEventListener("popstate", popStateEvent => updateNavigation());
 
-document.addEventListener("DOMContentLoaded", () => {});
+document.addEventListener("DOMContentLoaded", () => {
+  updateNavigation();
+});
 
-const updateNavigation = pathname => {
-  const level = pathLevel(pathname);
+const updateNavigation = (pathname = window.location.pathname) => {
+  const zoomLevel = pathLevel(pathname);
 
-  switch (level) {
-    case 0:
-    default:
-      rootNavigation.className = "focused";
-      sectionNavigation.className = "";
-      contentNavigation.className = "";
-      break;
+  document.body.className = `level-${zoomLevel}`;
 
-    case 1:
-      rootNavigation.className = "offscreen";
-      sectionNavigation.className = "focused";
-      contentNavigation.className = "";
-      break;
-
-    case 2:
-      rootNavigation.className = "offscreen";
-      sectionNavigation.className = "offscreen";
-      contentNavigation.className = "focused";
-      break;
-  }
+  links.forEach(link => {
+    link.className = pathname.startsWith(link.pathname) ? "active" : "";
+  });
 };
 
 const pathLevel = string =>
