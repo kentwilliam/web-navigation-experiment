@@ -1,3 +1,5 @@
+const basePath = window.location.pathname;
+
 const navNodes = document.querySelectorAll("nav");
 
 const links = document.querySelectorAll("a[href]");
@@ -5,7 +7,8 @@ const links = document.querySelectorAll("a[href]");
 document.addEventListener("click", event =>
   letWith(event.target.closest("a"), link => {
     event.preventDefault();
-    window.history.pushState({}, null, link.pathname);
+    const newURL = (basePath + link.pathname).replace('//','/');
+    window.history.pushState({}, null, newURL);
     updateNavigation(link.pathname);
   })
 );
@@ -16,7 +19,9 @@ document.addEventListener("DOMContentLoaded", () => {
   updateNavigation();
 });
 
-const updateNavigation = (pathname = window.location.pathname) => {
+const pathname = () => window.location.pathname.slice(basePath.length);
+
+const updateNavigation = (pathname = pathname()) => {
   const zoomLevel = pathLevel(pathname);
 
   document.body.className = `level-${zoomLevel}`;
@@ -40,3 +45,4 @@ const letWith = (variable, predicate, elsePredicate) => {
     return;
   }
 };
+
